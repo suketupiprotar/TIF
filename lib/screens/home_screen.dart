@@ -7,6 +7,7 @@ import 'package:tif/model/ModelData.dart';
 import 'package:tif/model/all_event_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:tif/screens/event_details_screen.dart';
+import 'package:tif/screens/search_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -59,9 +60,19 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 10.0),
-            child: Icon(
-              Icons.search,
-              color: Color(0xff120D26),
+            child: InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SearchScreen(),
+                  ),
+                );
+              },
+              child: Icon(
+                Icons.search,
+                color: Color(0xff120D26),
+              ),
             ),
           ),
           Padding(
@@ -85,12 +96,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: CircularProgressIndicator(),
                   );
                 } else {
-                  // print("lenght");
-                  // print(allEvents.length);
                   return ListView.builder(
                     itemCount: allEvents.length,
                     itemBuilder: (context, index) {
-                      // Text(snpashot.data![index]['title'].toString())
                       return Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10),
                         child: Padding(
