@@ -38,6 +38,8 @@ dependencies:
   google_fonts: ^4.0.3
   http: ^0.13.5
   intl: ^0.18.0
+  flutter_svg: ^2.0.4
+  readmore: ^2.2.0
 
 dev_dependencies:
   flutter_test:

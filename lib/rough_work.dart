@@ -24,4 +24,22 @@
 // )
 
 
+//
+// Image(
+// image: NetworkImage(widget.organiserIcon),
+// ),),
+
+
+//
+// Text(
+// 'Book Now',
+// style: GoogleFonts.inter(
+// fontWeight: FontWeight.w500,
+// fontSize: 16,
+// color: Colors.white,
+// ),
+// ),
+
+
+
 

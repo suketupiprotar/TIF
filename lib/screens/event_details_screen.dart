@@ -1,6 +1,11 @@
+import 'dart:ffi';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
+import 'package:readmore/readmore.dart';
 
 class EventDatailsScreen extends StatefulWidget {
   // const EventDatailsScreen({Key? key}) : super(key: key);
@@ -53,17 +58,12 @@ class _EventDatailsScreenState extends State<EventDatailsScreen> {
                 height: 10,
                 width: 36,
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(13),
-                      topRight: Radius.circular(13),
-                      bottomLeft: Radius.circular(13),
-                      bottomRight: Radius.circular(13),
-                    ),
+                    borderRadius: BorderRadius.circular(13),
                     color: Color.fromARGB(76, 255, 255, 255),
                     shape: BoxShape.rectangle),
                 child: Container(
-                  height: 0.5,
-                  width: 0.5,
+                  height: 0.4,
+                  width: 0.4,
                   child: Image.asset(
                     'images/bookmark.png',
                     width: 0.5,
@@ -81,12 +81,12 @@ class _EventDatailsScreenState extends State<EventDatailsScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            height: MediaQuery.of(context).size.height * 0.35,
+            height: MediaQuery.of(context).size.height * 0.40,
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: NetworkImage(widget.banner_image),
-                fit: BoxFit.cover,
+                fit: BoxFit.fill,
               ),
             ),
           ),
@@ -127,11 +127,19 @@ class _EventDatailsScreenState extends State<EventDatailsScreen> {
                           borderRadius: BorderRadius.circular(15)
                           // color: Colors.white
                           ),
-                      child: ImageIcon(
-                        NetworkImage(
-                          widget.organiserIcon,
-                        ),
-                      ),
+                      child: widget.organiserIcon.contains('.svg')
+                          ? SvgPicture.network(
+                              widget.organiserIcon,
+                              semanticsLabel: 'Organiser Icon',
+                              placeholderBuilder: (BuildContext context) =>
+                                  Container(
+                                      padding: const EdgeInsets.all(30.0),
+                                      child:
+                                          const CircularProgressIndicator()), //placeholder while downloading file.
+                            )
+                          : Image(
+                              image: NetworkImage(widget.organiserIcon),
+                            ),
                     ),
                     SizedBox(
                       width: 10,
@@ -148,7 +156,9 @@ class _EventDatailsScreenState extends State<EventDatailsScreen> {
                             color: Color(0xff0D0C26),
                           ),
                         ),
-                        SizedBox(height: 5,),
+                        SizedBox(
+                          height: 5,
+                        ),
                         Text(
                           'Organizer',
                           style: GoogleFonts.inter(
@@ -159,12 +169,12 @@ class _EventDatailsScreenState extends State<EventDatailsScreen> {
                         )
                       ],
                     ),
-
-
                   ],
                 ),
               ),
-              SizedBox(height: 20,),
+              SizedBox(
+                height: 20,
+              ),
               Padding(
                 padding: const EdgeInsets.only(
                   left: 22.0,
@@ -174,15 +184,18 @@ class _EventDatailsScreenState extends State<EventDatailsScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      height: 48,
-                      width: 48,
-                      decoration: BoxDecoration(
-                          color: Color.fromARGB(76, 86, 105, 255),
-                          borderRadius: BorderRadius.circular(15)
-                          // color: Colors.white
-                          ),
-                      child: Icon(Icons.calendar_month,color: Color(0xffff5669ff),size: 35,)
-                    ),
+                        height: 48,
+                        width: 48,
+                        decoration: BoxDecoration(
+                            color: Color.fromARGB(76, 86, 105, 255),
+                            borderRadius: BorderRadius.circular(15)
+                            // color: Colors.white
+                            ),
+                        child: Icon(
+                          Icons.calendar_month,
+                          color: Color(0xffff5669ff),
+                          size: 35,
+                        )),
                     SizedBox(
                       width: 10,
                     ),
@@ -198,9 +211,22 @@ class _EventDatailsScreenState extends State<EventDatailsScreen> {
                             color: Color(0xff0D0C26),
                           ),
                         ),
-                        SizedBox(height: 5,),
+                        SizedBox(
+                          height: 5,
+                        ),
                         Text(
-                          'Organizer',
+                          DateFormat.EEEE().format(
+                                DateTime.parse(
+                                  widget.date_time,
+                                ),
+                              ) +
+                              "," +
+                              " " +
+                              DateFormat.jm().format(
+                                DateTime.parse(
+                                  widget.date_time,
+                                ),
+                              ),
                           style: GoogleFonts.inter(
                             fontWeight: FontWeight.w400,
                             fontSize: 12,
@@ -209,12 +235,166 @@ class _EventDatailsScreenState extends State<EventDatailsScreen> {
                         )
                       ],
                     ),
-
-
                   ],
                 ),
               ),
-
+              SizedBox(
+                height: 20,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 22.0,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                        height: 48,
+                        width: 48,
+                        decoration: BoxDecoration(
+                            color: Color.fromARGB(76, 86, 105, 255),
+                            borderRadius: BorderRadius.circular(15)
+                            // color: Colors.white
+                            ),
+                        child: Icon(
+                          Icons.location_on,
+                          color: Color(0xffff5669ff),
+                          size: 35,
+                        )),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          widget.venueName,
+                          style: GoogleFonts.inter(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 15,
+                            color: Color(0xff0D0C26),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          widget.venueCity + "," + " " + widget.venueCountry,
+                          style: GoogleFonts.inter(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 12,
+                            color: Color(0xff706E8F),
+                          ),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 22.0),
+                child: Text(
+                  'About Event',
+                  style: GoogleFonts.inter(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 18,
+                    color: Color(0xff120D26),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 22.0),
+                child: Container(
+                  height: 112,
+                  width: 335,
+                  child: SingleChildScrollView(
+                    child: ReadMoreText(
+                      widget.description,
+                      trimLines: 4,
+                      colorClickableText: Color(0xff5669FF),
+                      trimMode: TrimMode.Line,
+                      trimCollapsedText: 'Show more',
+                      trimExpandedText: 'Show less',
+                      moreStyle: GoogleFonts.inter(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xffff5669ff),
+                      ),
+                      style: GoogleFonts.inter(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Center(
+                child: InkWell(
+                  onTap: (){
+                    print('Pressed');
+                  },
+                  child: Container(
+                    height: 50,
+                    width: 300,
+                    decoration: BoxDecoration(
+                        color: Color(0xff5669FF),
+                        borderRadius: BorderRadius.circular(15)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Opacity(
+                          opacity: 0,
+                          child: Container(
+                            width: 30,
+                            height: 30,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(50),
+                              color: Color(0xff3D56F0),
+                            ),
+                            child: Icon(
+                              CupertinoIcons.arrow_right,
+                              size: 15,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        Text(
+                          'Book Now',
+                          style: GoogleFonts.inter(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 8.0),
+                          child: Container(
+                            width: 30,
+                            height: 30,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(50),
+                              color: Color(0xff3D56F0),
+                            ),
+                            child: Icon(
+                              CupertinoIcons.arrow_right,
+                              size: 15,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
             ],
           )
         ],
